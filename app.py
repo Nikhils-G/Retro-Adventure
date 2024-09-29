@@ -13,7 +13,11 @@ def home():
 @app.route('/game', methods=['POST'])
 def create_game():
     data = request.get_json()
-    player_name = data['player_name']
+    player_name = data.get('player_name')
+    
+    if player_name in players:
+        return jsonify({"error": "Player already exists"}), 400
+
     player = Player(player_name)
     players[player_name] = player
     return jsonify({
@@ -27,8 +31,8 @@ def create_game():
 @app.route('/select_character', methods=['POST'])
 def select_character():
     data = request.get_json()
-    player_name = data.get('player_name')  # Get the player name from the request
-    character_class = data.get('character_class')  # Get the selected character class
+    player_name = data.get('player_name')
+    character_class = data.get('character_class')
 
     if player_name in players:
         player = players[player_name]
@@ -40,8 +44,8 @@ def select_character():
 @app.route('/decision', methods=['POST'])
 def make_decision():
     data = request.get_json()
-    player_name = data['player_name']  # Get the player name from the request
-    decision = data['decision']
+    player_name = data.get('player_name')
+    decision = data.get('decision')
 
     if player_name in players:
         player = players[player_name]
@@ -50,8 +54,8 @@ def make_decision():
             "response": response,
             "ripple_effect": ripple_effect,
             "health": player.health,
-            "inventory": player.inventory,  # Return inventory
-            "allies": player.allies,        # Return allies
+            "inventory": player.inventory,  
+            "allies": player.allies,        
             "time_loops": player.time_loops,
             "achievements": player.path      # Send achievements back to the frontend
         })
@@ -59,4 +63,4 @@ def make_decision():
         return jsonify({"error": "Player not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Set to False in production
