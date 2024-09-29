@@ -1,6 +1,6 @@
-Flask==2.2.2              # The web framework for building your application
-gunicorn==20.1.0          # WSGI server for running your Flask app in production
-Flask-Cors==3.0.10        # If you're handling CORS (Cross-Origin Resource Sharing)
-python-dateutil==2.9.0    # For parsing dates and times (if used)
-pytz==2024.2              # For timezone support (if used)
-python-json-logger==2.0.7  # For logging in JSON format (if used)
+Flask==2.2.2
+Flask-Cors==3.0.10        
+python-dateutil==2.9.0    
+pytz==2024.2              
+python-json-logger==2.0.7 
+waitress==2.1.2
