@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Paradox: The Infinity Nexus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src="{{ url_for('static', filename='retro.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="container">
+        <div class="console-container">
+            <h1 class="title glitch" data-text="Quantum Paradox: The Infinity Nexus">Quantum Paradox: The Infinity Nexus</h1>
+            <div id="start-interface">
+                <form id="start-form">
+                    <label for="player_name" class="label neon-text">Enter your name:</label>
+                    <input type="text" name="player_name" id="player-name" required class="neon-input">
+                    <button type="submit" class="neon-button">Start Adventure</button>
+                </form>
+            </div>
+
+            <div id="how-to-play" class="how-to-play" style="display: none;">
+                <h2 class="neon-text">How to Play</h2>
+                <p>Welcome to Quantum Paradox: The Infinity Nexus! Here are some key points to understand the game:</p>
+                <ul>
+                    <li>Explore the multiverse and encounter various challenges.</li>
+                    <li>Choose your actions wisely: Explore, Fight, or Investigate.</li>
+                    <li>Your health will decrease when fighting enemies or facing dangers.</li>
+                    <li>Collect items and allies as you progress.</li>
+                    <li>Your decisions will impact the outcomes of your adventure!</li>
+                </ul>
+                <button id="continue-button" class="neon-button">Continue to Adventure</button>
+            </div>
+
+            <div id="character-selection" class="how-to-play" style="display: none;">
+                <h2 class="neon-text">Select Your Character Class</h2>
+                <button id="warrior-button" class="neon-button">Warrior</button>
+                <button id="mage-button" class="neon-button">Mage</button>
+                <button id="rogue-button" class="neon-button">Rogue</button>
+            </div>
+
+            <div id="game-interface" class="console-screen" style="display: none;">
+                <div class="console-output">
+                    <h2 id="player-message" class="flicker-text"></h2>
+                    <div class="status">
+                        <div class="status-card">
+                            <p>Your health:</p>
+                            <p id="player-health" class="status-value"></p>
+                        </div>
+                        <div class="status-card">
+                            <p>Your inventory count:</p>
+                            <p id="player-inventory-count" class="status-value"></p> <!-- Count display -->
+                        </div>
+                        <div class="status-card">
+                            <p>Your allies count:</p>
+                            <p id="player-allies-count" class="status-value"></p> <!-- Count display -->
+                        </div>
+                        <div class="status-card">
+                            <p>Time loops:</p>
+                            <p id="time-loops" class="status-value"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-section">
+                    <h3 style="color: #ff0000;">Choose Your Action</h3>
+                    <div id="action-buttons">
+                        <button class="action-button neon-button" data-decision="explore">Explore</button>
+                        <button class="action-button neon-button" data-decision="fight">Fight</button>
+                        <button class="action-button neon-button" data-decision="investigate">Investigate</button>
+                    </div>
+                </div>
+                <p id="response-message" class="scrolling-text"></p>
+                <p id="ripple-effect-message" class="scrolling-text"></p>
+                <div class="progress-bar">
+                    <div id="health-bar" class="radial-progress" style="--progress: 100;">Health</div>
+                </div>
+
+                <img id="dynamic-image" src="" alt="Dynamic Scene" style="display:none;">
+            </div>
+
+            <!-- Game Over Popup -->
+            <div id="game-over-popup" class="popup" style="display: none;">
+                <h2>Game Over</h2>
+                <p id="game-over-message"></p>
+                <ul id="achievements-list"></ul> <!-- List for achievements -->
+                <button id="restart-button" class="neon-button">Restart Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Handle form submission to start the game
+            $('#start-form').on('submit', function(e) {
+                e.preventDefault();
+                const playerName = $('#player-name').val();
+
+                $.ajax({
+                    url: '/game',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ player_name: playerName }),
+                    success: function(data) {
+                        $('#player-message').text(data.message);
+                        $('#player-health').text(data.health);
+                        $('#start-interface').hide();
+                        $('#how-to-play').show(); // Show how to play section
+                    },
+                    error: function(xhr) {
+                        alert('Error starting game: ' + xhr.responseText);
+                    }
+                });
+            });
+
+            // Continue to adventure button
+            $('#continue-button').on('click', function() {
+                $('#how-to-play').hide();
+                $('#character-selection').show(); // Show character selection
+            });
+
+            // Character selection
+            $('#warrior-button').on('click', function() {
+                selectCharacter('Warrior');
+            });
+            $('#mage-button').on('click', function() {
+                selectCharacter('Mage');
+            });
+            $('#rogue-button').on('click', function() {
+                selectCharacter('Rogue');
+            });
+
+            function selectCharacter(characterClass) {
+                const playerName = $('#player-name').val(); // Get the player name from input
+
+                $.ajax({
+                    url: '/select_character', // Endpoint to handle character selection
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ player_name: playerName, character_class: characterClass }),
+                    success: function(data) {
+                        $('#character-selection').hide(); // Hide character selection
+                        $('#game-interface').show(); // Show the game interface
+                    },
+                    error: function(xhr) {
+                        alert('Error selecting character: ' + xhr.responseText);
+                    }
+                });
+            }
+
+            // Handle decision making (explore, fight, investigate)
+            $('.action-button').on('click', function() {
+                const decision = $(this).data('decision');
+                const playerName = $('#player-name').val(); // Get the player name from input
+
+                $.ajax({
+                    url: '/decision',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ player_name: playerName, decision: decision }), // Include player name here
+                    success: function(data) {
+                        $('#response-message').text(data.response);
+                        $('#ripple-effect-message').text(data.ripple_effect);
+                        $('#player-health').text(data.health);
+                        $('#player-inventory-count').text(data.inventory.length); // Update inventory count display
+                        $('#time-loops').text(data.time_loops);
+                        $('#player-allies-count').text(data.allies.length); // Update allies count display
+                        $('#health-bar').css('width', data.health + '%');
+
+                        // Check for game over condition
+                        if (data.health <= 0) {
+                            endGame(data.achievements); // Pass achievements to the endGame function
+                        } else {
+                            showPopup(`You decided to ${decision}!`); // Example popup message
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error processing decision: ' + xhr.responseText);
+                    }
+                });
+            });
+
+            // Restart game functionality
+            $('#restart-button').on('click', function() {
+                location.reload(); // Reload the page to restart
+            });
+        });
+
+        function showPopup(message) {
+            const popup = $('<div class="popup"></div>').text(message);
+            $('body').append(popup);
+            popup.addClass('active');
+            
+            // Remove the popup after 3 seconds
+            setTimeout(() => {
+                popup.remove();
+            }, 3000);
+        }
+
+        function endGame(achievements) {
+            $('#game-over-message').text('You fought bravely! Here are your achievements:');
+            $('#achievements-list').empty(); // Clear previous achievements
+            achievements.forEach(achievement => {
+                $('#achievements-list').append(`<li>${achievement}</li>`); // Append each achievement
+            });
+            $('#game-over-popup').show();
+            $('#game-interface').hide();
+        }
+    </script>
+</body>
+</html>

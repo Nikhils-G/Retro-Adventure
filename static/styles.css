@@ -1,0 +1,145 @@
+/* Body styles */
+body {
+    background-color: #000; /* Black background */
+    color: #ffffff; /* White text for contrast */
+    font-family: 'Press Start 2P', cursive; /* Retro font */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+/* Container styles */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+    padding: 20px;
+}
+
+/* Console container */
+.console-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); /* Neon glow */
+    width: 100%;
+    max-width: 600px; /* Limit the max width */
+}
+
+/* Title styling */
+.title {
+    text-align: center;
+    color: #ffcc00; /* Gold color for the title */
+}
+
+/* Button styles */
+.neon-button {
+    background-color: #00ff00; /* Neon green */
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+    color: #000; /* Black text */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 10px 0;
+}
+
+.neon-button:hover {
+    background-color: #5ac7e0; /* Lighten on hover */
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+/* Status card styling */
+.status {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.status-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 20%; /* Fixed width for status cards */
+}
+
+.status-value {
+    font-size: 1.5rem; /* Larger font for values */
+    color: #00ff00; /* Green for values */
+}
+
+/* Action section */
+.action-section {
+    margin-top: 20px;
+}
+
+/* Progress bar styles */
+.progress-bar {
+    margin-top: 10px;
+    background-color: #555;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#health-bar {
+    height: 20px;
+    background-color: #ff0000; /* Red for health */
+    transition: width 0.5s; /* Smooth transition */
+    text-align: center;
+    color: white; /* White text for bar */
+}
+
+/* Popup styles */
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(50, 50, 50, 0.9);
+    color: #00ff00; /* Bright green for popup text */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    z-index: 1000;
+    display: none; /* Hidden by default */
+}
+
+.popup.active {
+    display: block; /* Show when active */
+    animation: popupAnimation 0.5s ease-in-out; /* Add a simple popup animation */
+}
+
+@keyframes popupAnimation {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Custom scrollbar for better visibility */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #333; /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00; /* Thumb color */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5ac7e0; /* Thumb color on hover */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .status {
+        flex-direction: column; /* Stack status cards vertically on small screens */
+    }
+
+    .status-card {
+        width: 80%; /* Full width for cards on mobile */
+        margin: 5px auto; /* Center cards */
+    }
+}

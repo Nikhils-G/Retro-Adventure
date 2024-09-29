@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game - Quantum Paradox</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2 class="subtitle">Welcome, {{ player.name }}!</h2>
+        <p>Your health: {{ player.health }}</p>
+        <p>Your inventory: {{ ', '.join(player.inventory) if player.inventory else 'empty' }}</p>
+
+        <h3>Choose Your Action</h3>
+        <form method="POST">
+            <label for="decision" class="label">What do you want to do?</label>
+            <input type="text" name="decision" required class="input">
+            <button type="submit" class="button">Submit</button>
+        </form>
+
+        <p><strong>Story Response:</strong> {{ response }}</p>
+        <p><strong>Ripple Effect:</strong> {{ ripple_effect }}</p>
+    </div>
+</body>
+</html>
