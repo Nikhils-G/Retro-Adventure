@@ -1,6 +1,7 @@
 Flask==2.2.2
-Flask-Cors==3.0.10        
-python-dateutil==2.9.0    
-pytz==2024.2              
-python-json-logger==2.0.7 
-waitress==2.1.2
+waitress==2.1.2  # or the latest version
+Flask-Cors==3.0.10  # Optional, only if you're using it
+python-dateutil==2.9.0
+pytz==2024.2
+python-json-logger==2.0.7
+Werkzeug==2.2.2  # Add this line
