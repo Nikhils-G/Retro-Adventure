@@ -1,0 +1,6 @@
+Flask==2.2.2
+Flask-Cors==3.0.10        
+python-dateutil==2.9.0    
+pytz==2024.2              
+python-json-logger==2.0.7 
+Waitress==2.0.0
